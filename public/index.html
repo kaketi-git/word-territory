@@ -52,12 +52,12 @@
             /* ① 盤面がキーボードに押し潰されないように「縦横比（正方形）」で固定する */
             .main-board-area { 
                 order: 1; 
-                flex: 0 0 auto; /* 勝手に縮むのを禁止 */
+                flex: 1 1 40vh; /* 余白に合わせて柔軟に伸縮させる */
                 width: 100%; 
-                aspect-ratio: 1 / 1; /* 綺麗な正方形を保つ */
-                min-height: auto;
+                min-height: 40vh; /* 最低限の高さだけは確保 */
                 border-radius: 12px;
-            } 
+                overflow: hidden; /* はみ出し防止 */
+            }
             /* ② ステータス周りのUIを極力コンパクトに */
             .status-box { padding: 6px 10px; }
             #p-turn { font-size: 1rem !important; } /* ターンの文字を小さく */
@@ -271,22 +271,47 @@
         }
 
         function showRules() {
-            document.getElementById('modal-title').innerText = "ルールと勝利条件";
-            document.getElementById('modal-body').innerHTML = `
-                <div style="font-size:0.9rem; line-height:1.6;">
-                    <strong>【得点の計算方法】</strong><br>
-                    ・盤面に置いた自分の文字：<strong>1文字につき1点</strong><br>
-                    ・囲んだ空白マス（陣地）：<strong>1マスにつき1点</strong><br>
-                    ★8ターン目以降に囲んで獲得した陣地は「黄金マス」となり、得点が2倍（1マス2点）になります。<br><br>
-                    <strong>【陣地の獲得条件と注意点】</strong><br>
-                    文字で空白を囲むと陣地になりますが、盤面の文字を<strong>2つ以上</strong>使って囲む必要があります。<br>
-                    ★注意：<strong>1つだけ</strong>使って囲んだ場合、ペナルティとして相手の陣地になってしまいます！
+    document.getElementById('modal-title').innerText = "ルールと勝利条件";
+    document.getElementById('modal-body').innerHTML = `
+        <div style="font-size:0.85rem; line-height:1.6; color: var(--wall);">
+            <div style="background:var(--bg3); padding:10px; border-radius:8px; margin-bottom:10px; border-left: 4px solid var(--p2);">
+                <strong style="color:var(--p2);">🏆 勝利条件</strong><br>
+                全10ターン終了時に、<strong>最も合計得点（文字＋陣地）が多い人</strong>の勝ち！
+            </div>
+            
+            <strong>【得点の計算】</strong><br>
+            ・置いた文字：1文字につき 1点<br>
+            ・囲んだ陣地：1マスにつき 1点<br>
+            <span style="color:#E67E22; font-size:0.8rem;">※8ターン目以降は「黄金マス」になり陣地が2倍(2点)！</span><br><br>
+            
+            <strong>【陣地の囲み方】</strong><br>
+            元から盤面にある文字（黒文字）を<strong>2つ以上</strong>使って空白を囲むと陣地になります。<br>
+            
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <div style="flex:1; background:#f8f9fa; border:2px solid #51CF66; padding:6px; border-radius:8px; text-align:center;">
+                    <div style="color:#51CF66; font-weight:bold; margin-bottom:4px; font-size:12px;">⭕ 成功（2つ利用）</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-size:11px; font-weight:bold;">
+                        <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#EBFBEE; color:#51CF66; border-radius:2px;">陣</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                    </div>
                 </div>
-            `;
-            const f = document.getElementById('modal-btns'); f.innerHTML = '';
-            const b = document.createElement('button'); b.className="btn btn-main"; b.innerText="了解！"; b.onclick=closeModal;
-            f.appendChild(b); document.getElementById('modal-overlay').style.display='flex';
-        }
+                <div style="flex:1; background:#f8f9fa; border:2px solid #FF6B6B; padding:6px; border-radius:8px; text-align:center;">
+                    <div style="color:#FF6B6B; font-weight:bold; margin-bottom:4px; font-size:12px;">❌ 失敗（1つ利用）</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-size:11px; font-weight:bold;">
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#E7F5FF; color:#4DABF7; border-radius:2px;">敵陣</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                    </div>
+                    <div style="font-size:9px; margin-top:4px; color:var(--neutral);">※敵の陣地に！</div>
+                </div>
+            </div>
+        </div>
+    `;
+    const f = document.getElementById('modal-btns'); f.innerHTML = '';
+    const b = document.createElement('button'); b.className="btn btn-main"; b.innerText="了解！"; b.onclick=closeModal;
+    f.appendChild(b); document.getElementById('modal-overlay').style.display='flex';
+}
 
         function confirmQuit() { 
             document.getElementById('modal-title').innerText="確認"; 

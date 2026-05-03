@@ -30,38 +30,45 @@
         .sidebar { width: 280px; display: flex; flex-direction: column; gap: 10px; z-index: 10; }
         .main-board-area { flex: 1; display: flex; justify-content: center; align-items: center; background: rgba(237, 242, 247, 0.6); backdrop-filter: blur(8px); border-radius: 20px; position: relative; overflow: hidden; box-shadow: inset 0 4px 10px rgba(0,0,0,0.03); z-index: 10; }
         
-        /* --- スマホ用レイアウト（縦並び） --- */
+
+       /* --- スマホ用レイアウト（縦並び） --- */
         @media screen and (max-width: 850px) { 
             #game-screen.active { 
                 flex-direction: column; 
-                padding: 10px; 
-                padding-top: env(safe-area-inset-top); /* iPhoneのノッチ対応 */
+                padding: 8px; /* 全体の余白を少し狭く */
+                padding-top: env(safe-area-inset-top);
                 padding-bottom: env(safe-area-inset-bottom);
-                gap: 8px;
-                overflow-y: auto; /* スマホでキーボードが出たときスクロールできるようにする */
+                gap: 6px;
+                overflow-y: auto; 
             } 
             .sidebar { 
                 width: 100%; 
-                order: 2; /* 盤面を上、操作パネルを下に配置 */
+                order: 2; 
                 display: flex; 
                 flex-direction: column;
-                gap: 8px; 
+                gap: 6px; /* 各パネルの隙間を詰める */
                 flex: none;
             } 
+            /* ① 盤面がキーボードに押し潰されないように「縦横比（正方形）」で固定する */
             .main-board-area { 
                 order: 1; 
-                flex: 1; /* 盤面エリアを優先的に広げる */
+                flex: 0 0 auto; /* 勝手に縮むのを禁止 */
                 width: 100%; 
-                min-height: 45vh; /* 最低限の高さを確保 */
+                aspect-ratio: 1 / 1; /* 綺麗な正方形を保つ */
+                min-height: auto;
                 border-radius: 12px;
             } 
-            .status-box { padding: 10px; }
-            .log-area { height: 60px; min-height: 60px; } /* スマホではログを少し小さく */
-            .time-warning { font-size: 2.5rem; } 
+            /* ② ステータス周りのUIを極力コンパクトに */
+            .status-box { padding: 6px 10px; }
+            #p-turn { font-size: 1rem !important; } /* ターンの文字を小さく */
+            #turn-display { font-size: 10px; margin-top: 2px; }
+            #score-grid { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 4px; gap: 2px; }
+            #score-grid > div { font-size: 12px !important; } /* スコアの文字を小さく */
             
-            /* スマホでスコアが見やすいように横並びに調整 */
-            #score-grid { display: flex; justify-content: space-between; flex-wrap: wrap; }
-            #score-grid > div { font-size: 14px !important; }
+            /* ログと入力エリアも少しスッキリさせる */
+            .log-area { height: 50px; min-height: 50px; padding: 6px; font-size: 10px; }
+            .time-warning { font-size: 2.5rem; } 
+            .game-controls { padding: 10px; }
         }
 
         .time-warning { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; font-weight: 900; color: var(--p1); pointer-events: none; z-index: 50; opacity: 0; text-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.8); white-space: nowrap; }

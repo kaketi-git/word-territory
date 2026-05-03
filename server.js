@@ -5,7 +5,18 @@ const io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
-const HIRAGANA_LIST = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんーがぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽぁぃぅぇぉゃゅょっ";
+const CHAR_NORMAL = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをんー";
+const CHAR_VOICED = "がぎぐげござじずぜぞだぢづでどばびぶべぼ";
+const CHAR_SEMI = "ぱぴぷぺぽ";
+const CHAR_SMALL = "ぁぃぅぇぉゃゅょっ";
+
+function getRandomChar() {
+    const r = Math.random();
+    if (r < 0.75) return CHAR_NORMAL[Math.floor(Math.random() * CHAR_NORMAL.length)]; // 75%で通常の文字
+    if (r < 0.90) return CHAR_VOICED[Math.floor(Math.random() * CHAR_VOICED.length)]; // 15%で濁音
+    if (r < 0.95) return CHAR_SEMI[Math.floor(Math.random() * CHAR_SEMI.length)];     // 5%で半濁音
+    return CHAR_SMALL[Math.floor(Math.random() * CHAR_SMALL.length)];                 // 5%で小文字
+}
 const rooms = {};
 
 io.on('connection', (socket) => {
@@ -135,7 +146,7 @@ function startGame(roomId) {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             if (Math.random() < parseFloat(room.settings.density)) {
-                boardData[r][c] = { char: HIRAGANA_LIST[Math.floor(Math.random() * HIRAGANA_LIST.length)], owner: 0 };
+                boardData[r][c] = { char: getRandomChar(), owner: 0 };
             }
         }
     }

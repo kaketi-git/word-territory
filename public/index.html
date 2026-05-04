@@ -178,7 +178,6 @@
             <div class="game-controls ui-box">
                 <!-- スマホのズームを防ぐため font-size: 16px 以上に設定 -->
                 <input type="text" id="wordInput" placeholder="ここに入力" oninput="draw()" style="width:100%; padding:12px; border-radius:12px; font-family:inherit; font-size:16px; text-align:center;">
-                <div style="font-size:10px; color:var(--neutral); text-align:center; margin-top:4px; font-weight:bold;">※選択中のマスを再度タップでプレビューの縦横切替</div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; margin-top:10px;">
                     <button class="btn btn-info" onclick="play('H')" style="font-size:13px;">横に</button>
                     <button class="btn btn-sub" onclick="play('V')" style="font-size:13px;">縦に</button>
@@ -274,49 +273,41 @@
         }
 
         function showRules() {
-            document.getElementById('modal-title').innerText = "ルールと勝利条件";
-            document.getElementById('modal-body').innerHTML = `
-                <div style="font-size:0.85rem; line-height:1.6; color: var(--wall);">
-                    <div style="background:var(--bg3); padding:10px; border-radius:8px; margin-bottom:10px; border-left: 4px solid var(--p2);">
-                        <strong style="color:var(--p2);">🏆 勝利条件</strong><br>
-                        全10ターン終了時に、<strong>最も合計得点（文字＋陣地）が多い人</strong>の勝ち！
-                    </div>
-                    
-                    <strong>【得点の計算】</strong><br>
-                    ・置いた文字：1文字につき 1点<br>
-                    ・囲んだ陣地：1マスにつき 1点<br>
-                    <span style="color:#E67E22; font-size:0.8rem;">※8ターン目以降は「黄金マス」になり陣地が2倍(2点)！</span><br><br>
-                    
-                    <strong>【陣地の囲み方】</strong><br>
-                    盤面にすでにある文字（初期配置や、誰が置いた文字でもOK）を<strong>2つ以上</strong>利用して空白を囲むと陣地になります。<br>
-                    
-                    <div style="display:flex; gap:8px; margin-top:10px;">
-                        <div style="flex:1; background:#f8f9fa; border:2px solid #51CF66; padding:6px; border-radius:8px; text-align:center;">
-                            <div style="color:#51CF66; font-weight:bold; margin-bottom:4px; font-size:12px;">⭕ 成功（2つ利用）</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:2px; font-size:11px; font-weight:bold;">
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#EBFBEE; color:#51CF66; border-radius:2px;">陣</div><div style="background:#EBFBEE; color:#51CF66; border-radius:2px;">陣</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                                <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div><div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                            </div>
-                        </div>
-                        <div style="flex:1; background:#f8f9fa; border:2px solid #FF6B6B; padding:6px; border-radius:8px; text-align:center;">
-                            <div style="color:#FF6B6B; font-weight:bold; margin-bottom:4px; font-size:12px;">❌ 失敗（1つ利用）</div>
-                            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:2px; font-size:11px; font-weight:bold;">
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E7F5FF; color:#4DABF7; border-radius:2px;">敵陣</div><div style="background:#E7F5FF; color:#4DABF7; border-radius:2px;">敵陣</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                                <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
-                                <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
-                            </div>
-                            <div style="font-size:9px; margin-top:4px; color:var(--neutral);">※敵の陣地に！</div>
-                        </div>
+    document.getElementById('modal-title').innerText = "ルールと勝利条件";
+    document.getElementById('modal-body').innerHTML = `
+        <div style="font-size:0.85rem; line-height:1.6; color: var(--wall);">
+            <div style="background:var(--bg3); padding:10px; border-radius:8px; margin-bottom:10px; border-left: 4px solid var(--p2);">
+                <strong style="color:var(--p2);">🏆 勝利条件</strong><br>
+                全10ターン終了時に、<strong>最も合計得点（文字＋陣地）が多い人</strong>の勝ち！
+            </div>
+            
+            <strong>【陣地の囲み方】</strong><br>
+            盤面にすでにある文字を<strong>2つ以上</strong>利用して空白を囲むと自陣になります。利用した文字が<strong>1つのみ</strong>の場合、囲った範囲は相手の陣地（敵陣）になってしまうので注意してください！<br>
+            
+            <div style="display:flex; gap:8px; margin-top:10px;">
+                <div style="flex:1; background:#f8f9fa; border:2px solid #51CF66; padding:6px; border-radius:8px; text-align:center;">
+                    <div style="color:#51CF66; font-weight:bold; margin-bottom:4px; font-size:12px;">⭕ 成功（2つ利用）</div>
+                    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:2px; font-size:11px; font-weight:bold;">
+                        <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                        <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#EBFBEE; color:#51CF66; border-radius:2px;">自陣</div><div style="background:#EBFBEE; color:#51CF66; border-radius:2px;">自陣</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                        <div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div>
                     </div>
                 </div>
-            `;
-            const f = document.getElementById('modal-btns'); f.innerHTML = '';
-            const b = document.createElement('button'); b.className="btn btn-main"; b.innerText="了解！"; b.onclick=closeModal;
-            f.appendChild(b); document.getElementById('modal-overlay').style.display='flex';
-        }
+                <div style="flex:1; background:#f8f9fa; border:2px solid #FF6B6B; padding:6px; border-radius:8px; text-align:center;">
+                    <div style="color:#FF6B6B; font-weight:bold; margin-bottom:4px; font-size:12px;">❌ 失敗（1つ利用）</div>
+                    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:2px; font-size:11px; font-weight:bold;">
+                        <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                        <div style="background:#E4E7EB; border-radius:2px;">元</div><div style="background:#E7F5FF; color:#4DABF7; border-radius:2px;">敵陣</div><div style="background:#E7F5FF; color:#4DABF7; border-radius:2px;">敵陣</div><div style="background:#E4E7EB; border-radius:2px;">元</div>
+                        <div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFF9DB; color:#F59F00; border-radius:2px;">利</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div><div style="background:#FFEEEE; color:#FF6B6B; border-radius:2px;">置</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    const f = document.getElementById('modal-btns'); f.innerHTML = '';
+    const b = document.createElement('button'); b.className="btn btn-main"; b.innerText="了解！"; b.onclick=closeModal;
+    f.appendChild(b); document.getElementById('modal-overlay').style.display='flex';
+}
 
 
         function confirmQuit() { 
@@ -444,33 +435,34 @@
                     
                     if(selected.r===r && selected.c===c) cell.classList.add('cell-selected');
                     
+// draw()関数内の「プレビュー描画」部分（縦横同時に表示）
                     if(word.length > 0 && currentPlayer === myPlayerIndex) {
-                        for(let i=0; i<word.length; i++) {
-                            // 縦横の切り替えに対応
-                            let pr = selected.r + (previewDir === 'V' ? i : 0);
-                            let pc = selected.c + (previewDir === 'H' ? i : 0);
-                            if(pr === r && pc === c) {
-                                if(!d) { 
-                                    cell.innerText = word[i]; 
-                                    cell.classList.add('preview-char'); 
-                                } else if(d.char !== word[i]) { 
-                                    cell.classList.add('preview-invalid'); // 違う文字と重なった（エラー）
-                                } else { 
-                                    cell.classList.add('preview-match'); // 既存の文字と一致した（利用成功！）
-                                }
+                        // 現在のマスが、横方向のプレビュー範囲に入っているか
+                        const isHorizontalMatch = (r === selected.r && c >= selected.c && c < selected.c + word.length);
+                        // 現在のマスが、縦方向のプレビュー範囲に入っているか
+                        const isVerticalMatch = (c === selected.c && r >= selected.r && r < selected.r + word.length);
+
+                        if(isHorizontalMatch || isVerticalMatch) {
+                            // 何文字目かを計算（横方向なら列の差、縦方向なら行の差）
+                            let charIndex = isHorizontalMatch ? (c - selected.c) : (r - selected.r);
+                            
+                            if(!d) { 
+                                cell.innerText = word[charIndex]; 
+                                cell.classList.add('preview-char'); 
+                            } else if(d.char !== word[charIndex]) { 
+                                cell.classList.add('preview-invalid'); 
+                            } else { 
+                                cell.classList.add('preview-match'); 
                             }
                         }
                     }
+}
                     
                     cell.onclick = (e) => { 
                         if(currentPlayer !== myPlayerIndex) return;
                         e.stopPropagation(); 
-                        // 同じマスをタップしたら縦横を切り替える
-                        if (selected.r === r && selected.c === c) {
-                            previewDir = previewDir === 'H' ? 'V' : 'H';
-                        } else {
-                            selected = {r, c};
-                        }
+                        // 縦横同時のため、切り替え処理を削除し、純粋に選択のみにする
+                        selected = {r, c};
                         draw(); 
                         document.getElementById('wordInput').blur();
                     };
